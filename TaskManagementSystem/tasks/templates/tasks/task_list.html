@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task List</title>
+</head>
+<body>
+    <h1>Task List</h1>
+    <a href="{% url 'task_create' %}">Create Task</a>
+
+    <form method="get">
+        <input type="text" name="q" placeholder="Search by title" value="{{ request.GET.q }}">
+        <select name="priority">
+            <option value="">All Priorities</option>
+            <option value="Low" {% if request.GET.priority == "Low" %}selected{% endif %}>Low</option>
+            <option value="Medium" {% if request.GET.priority == "Medium" %}selected{% endif %}>Medium</option>
+            <option value="High" {% if request.GET.priority == "High" %}selected{% endif %}>High</option>
+        </select>
+        <select name="status">
+            <option value="">All Statuses</option>
+            <option value="Pending" {% if request.GET.status == "Pending" %}selected{% endif %}>Pending</option>
+            <option value="In Progress" {% if request.GET.status == "In Progress" %}selected{% endif %}>In Progress</option>
+            <option value="Completed" {% if request.GET.status == "Completed" %}selected{% endif %}>Completed</option>
+        </select>
+        <button type="submit">Search</button>
+    </form>
+
+    <ul>
+        {% for task in tasks %}
+            <li>
+                {{ task.title }} - {{ task.due_date }} - {{ task.priority }} - {{ task.status }}
+                <a href="{% url 'task_update' task.pk %}">Edit</a>
+                <a href="{% url 'task_delete' task.pk %}">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
